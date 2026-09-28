@@ -4,7 +4,10 @@ import numpy as np
 from deepface import DeepFace
 
 
-KNOWN_FACES_DIR = "known_faces"
+KNOWN_FACES_DIR = os.path.join(
+    os.path.dirname(os.path.abspath(__file__)),
+    "known_faces"
+)
 
 MODEL_NAME = "Facenet"
 DETECTOR_BACKEND = "opencv"

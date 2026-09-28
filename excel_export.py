@@ -10,7 +10,10 @@ from database import (
 )
 
 
-EXPORT_DIR = "employee_reports"
+EXPORT_DIR = os.path.join(
+    os.path.dirname(os.path.abspath(__file__)),
+    "employee_reports"
+)
 
 
 def create_employee_excel(employee_name):

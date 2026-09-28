@@ -9,7 +9,10 @@ from database import (
 )
 
 
-KNOWN_FACES_DIR = "known_faces"
+KNOWN_FACES_DIR = os.path.join(
+    os.path.dirname(os.path.abspath(__file__)),
+    "known_faces"
+)
 
 
 def create_employee_folder(employee_name):
@@ -64,7 +67,10 @@ def add_employee_with_images(
             destination
         )
 
-    return True, "Employee added successfully."
+    return True, (
+        "Employee added successfully. Face images saved to:\n"
+        f"{folder}"
+    )
 
 
 def delete_employee(employee_name):
