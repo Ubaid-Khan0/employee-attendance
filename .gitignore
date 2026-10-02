@@ -1,8 +1,3 @@
-# Python bytecode
+# Compiled and build artifacts
 __pycache__/
 *.pyc
-
-# Build artifacts
-build/
-dist/
-*.spec

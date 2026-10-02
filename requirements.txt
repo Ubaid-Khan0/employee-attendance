@@ -1,0 +1,12 @@
+# Face recognition stack — version-pinned for compatibility.
+#
+# IMPORTANT: deepface 0.0.94+ requires keras<3 / tf-keras workarounds, and
+# opencv-python 4.11+/5.x no longer ships the haarcascade XML files that
+# deepface's "opencv" detector backend needs. The pins below are known-good.
+
+deepface==0.0.93
+tensorflow>=2.12,<2.16
+opencv-python<=4.10.0.84
+numpy<2
+pillow
+openpyxl

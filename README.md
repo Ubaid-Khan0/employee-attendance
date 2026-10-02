@@ -486,11 +486,21 @@ Clone or download the project and open the project directory.
 Install the required packages:
 
 ```bash
-pip install opencv-python
-pip install deepface
-pip install pillow
-pip install openpyxl
+pip install -r requirements.txt
 ```
+
+⚠️ **Do NOT install the latest `deepface` or `opencv-python` without pinning.**
+Recent versions break face recognition silently (the app runs but no face is
+ever recognized):
+
+* `opencv-python` **4.11+** no longer bundles the Haar cascade XML files, so
+  deepface's `opencv` detector raises
+  `Expected path .../cv2/data/haarcascade_frontalface_default.xml violated`.
+* `deepface` **0.0.94+** with TensorFlow 2.16+ requires the extra `tf-keras`
+  package, otherwise importing deepface fails.
+
+The pinned versions in `requirements.txt`
+(`deepface==0.0.93`, `opencv-python<=4.10.0.84`) are tested to work.
 
 Tkinter is normally included with standard Python installations on Windows.
 
