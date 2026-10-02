@@ -10,8 +10,9 @@ from database import (
 )
 
 
-EXPORT_DIR = os.path.join(
-    os.path.dirname(os.path.abspath(__file__)),
+from paths import data_path
+
+EXPORT_DIR = data_path(
     "employee_reports"
 )
 

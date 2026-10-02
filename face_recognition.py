@@ -4,8 +4,9 @@ import numpy as np
 from deepface import DeepFace
 
 
-KNOWN_FACES_DIR = os.path.join(
-    os.path.dirname(os.path.abspath(__file__)),
+from paths import data_path
+
+KNOWN_FACES_DIR = data_path(
     "known_faces"
 )
 
