@@ -31,6 +31,8 @@ from excel_export import (
 from face_recognition import (
     load_face_database,
     recognize_face,
+    check_environment,
+    KNOWN_FACES_DIR,
 )
 
 
@@ -1772,13 +1774,31 @@ class AttendanceApp:
 
         try:
 
+            ok, message = check_environment()
+
+            if not ok:
+
+                print("Face recognition DISABLED:", message)
+
+                self.face_database = {}
+
+                return
+
             database = load_face_database()
 
             self.face_database = database
 
             print(
-                f"Face database loaded: {len(database)} employees"
+                f"Face database loaded: {len(database)} faces"
             )
+
+            if not database:
+
+                print(
+                    "WARNING: no known faces found under",
+                    KNOWN_FACES_DIR,
+                    "- add employees with face photos first."
+                )
 
         except Exception as e:
 

@@ -1,8 +1,24 @@
 import os
+import warnings
+
 import cv2
 import numpy as np
-from deepface import DeepFace
 
+warnings.filterwarnings("ignore")
+
+# Reduce TensorFlow log noise (must be set before importing deepface/tf)
+os.environ.setdefault("TF_CPP_MIN_LOG_LEVEL", "3")
+os.environ.setdefault("TF_ENABLE_ONEDNN_OPTS", "0")
+
+try:
+    from deepface import DeepFace
+except Exception as _deepface_import_error:  # pragma: no cover
+    # The app itself must still run if the ML stack is broken;
+    # recognition will simply stay disabled until this is fixed.
+    DeepFace = None
+    DEEPFACE_IMPORT_ERROR = _deepface_import_error
+else:
+    DEEPFACE_IMPORT_ERROR = None
 
 from paths import data_path
 
@@ -15,6 +31,38 @@ DETECTOR_BACKEND = "opencv"
 
 # Lower value = stricter matching
 FACE_DISTANCE_THRESHOLD = 0.40
+
+
+def check_environment():
+    """
+    Verify that the face recognition stack can actually run.
+
+    Returns (ok, message). Call this once at startup and print/log the
+    message — silent failures here are the usual reason "the app works but
+    face recognition doesn't".
+    """
+    if DeepFace is None:
+        return False, (
+            "deepface could not be imported: "
+            f"{DEEPFACE_IMPORT_ERROR}\n"
+            "Fix: pip install -r requirements.txt"
+        )
+
+    cascade = os.path.join(
+        os.path.dirname(cv2.__file__),
+        "data",
+        "haarcascade_frontalface_default.xml",
+    )
+
+    if not os.path.exists(cascade):
+        return False, (
+            "OpenCV Haar cascade file missing (" + cascade + ").\n"
+            "opencv-python 4.11+ / 5.x no longer ships these files, which "
+            "breaks the 'opencv' detector backend.\n"
+            "Fix: pip install \"opencv-python<=4.10.0.84\" \"deepface==0.0.93\""
+        )
+
+    return True, "Face recognition environment OK"
 
 
 def cosine_distance(vector1, vector2):
