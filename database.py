@@ -2,8 +2,9 @@ import sqlite3
 import os
 from datetime import datetime
 
-DATABASE_FILE = os.path.join(
-    os.path.dirname(os.path.abspath(__file__)),
+from paths import data_path
+
+DATABASE_FILE = data_path(
     "database.db"
 )
 
